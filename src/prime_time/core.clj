@@ -1,4 +1,6 @@
-(ns prime-time.core)
+(ns prime-time.core
+  (:require [doric.core :refer [table]])
+  (:gen-class))
 
 (defn factor?
   "Returns true if n is a factor of x"
@@ -33,3 +35,19 @@
   [primes x]
   (zipmap (map (comp keyword str) primes)
           (map (partial * x) primes)))
+
+(defn prime-time-table
+  "Generate the times table for the first num-primes"
+  [num-primes]
+  (let [primes (generate-primes num-primes)
+        headings (map (comp keyword str) primes)
+        rows (map (partial generate-times primes)
+                  primes)]
+    (table headings rows)))
+
+(defn -main
+  [& [num-primes]]
+  (if num-primes
+    (println (prime-time-table (Integer/parseInt
+                                num-primes)))
+    (println "You must enter how many primes to display")))
