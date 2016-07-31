@@ -25,3 +25,10 @@
       (apply conj [1] primes)
       (recur (conj primes (next-prime primes next))
              (inc next)))))
+
+(defn generate-times
+  "Given a set of primes and a number, generate a
+   map of prime -> (prime * number)"
+  [primes x]
+  (zipmap (map (comp keyword str) primes)
+          (map (partial * x) primes)))
