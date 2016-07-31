@@ -6,7 +6,8 @@
   (= 0 (mod x n)))
 
 (defn prime?
-  "Checks x against a given list of primes. Returns true if x is also prime"
+  "Checks x against a given list of primes.
+   Returns true if x is also prime"
   [primes x]
   (not (boolean (seq (filter (partial factor? x) primes)))))
 
