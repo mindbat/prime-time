@@ -59,6 +59,8 @@
 (defn -main
   [& [num-primes]]
   (if num-primes
-    (println (prime-time-table (Integer/parseInt
-                                num-primes)))
+    (println (-> num-primes
+                 Integer/parseInt
+                 prime-time-table
+                 (str/replace #"^(\s+)1 \|" "$1   ")))
     (println "You must enter how many primes to display")))
