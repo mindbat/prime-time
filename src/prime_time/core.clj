@@ -1,5 +1,5 @@
 (ns prime-time.core
-  (:require [doric.core :refer [table]])
+  (:require [clojure.string :as str])
   (:gen-class))
 
 (defn factor?
@@ -36,14 +36,25 @@
   (zipmap (map (comp keyword str) primes)
           (map (partial * x) primes)))
 
+(defn format-row
+  "Prep a row for display by padding each cell to the desired width"
+  [width row]
+  (->> row
+       sort
+       (map #(format (str "%" width "d") %))
+       (str/join " | ")))
+
 (defn prime-time-table
   "Generate the times table for the first num-primes"
   [num-primes]
   (let [primes (generate-primes num-primes)
-        headings (map (comp keyword str) primes)
+        max-width (* 2 (count (str (last primes))))
         rows (map (partial generate-times primes)
                   primes)]
-    (table headings rows)))
+    (->> rows
+         (map vals)
+         (map (partial format-row max-width))
+         (str/join "\n"))))
 
 (defn -main
   [& [num-primes]]
